@@ -1,0 +1,28 @@
+body {
+	background-color: lightblue;
+}
+
+h1 {
+	text-align: center;
+}
+
+#content {
+	min-height: 300px;
+	width: 800px;
+	margin: auto;
+	background-color: #909091;
+}
+
+#sidebar {
+	text-align: center;
+}
+
+h1 {
+	margin: 5% 0 10% 0;
+}
+
+.pagination {
+	width: 500px;
+	margin: auto;
+	text-align: center;
+}
