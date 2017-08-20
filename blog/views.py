@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
-from .forms import EmailPostForm
 from django.core.mail import send_mail
+
+from .models import Post
+from .forms import EmailPostForm
 
 
 class PostListView(ListView):
@@ -55,7 +56,7 @@ def post_share(request, post_id):
         form = EmailPostForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            post_url = request.build_absolute_url(
+            post_url = request.build_absolute_uri(
                 post.get_absolute_url())
             subject = '{} ({}) zachęca do przeczytania "{}"'.format(
                 cd['name'], cd['email'], post.title)
