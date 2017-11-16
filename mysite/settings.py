@@ -11,22 +11,28 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-import sys
-
-sys.path.append(os.path.abspath('/home/retarf/django/'))
-
-from sec_mail import *
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+import sys
+sys.path.append('/home/retarf/projects/security')
+import mail_settings
+
+EMAIL_HOST = mail_settings.email_host
+EMAIL_HOST_USER = mail_settings.email_host_user
+EMAIL_HOST_PASSWORD = mail_settings.email_host_password
+EMAIL_PORT = mail_settings.email_port
+EMAIL_USE_TSL = mail_settings.email_use_tsl
+SMTP_ENABLED = mail_settings.smtp_enabled
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'o$zuyn8fd7$=594z+(%)tm%0mbm^!&kz@y@i7obla!ab@w*-n*'
+SECRET_KEY = '8_j-2)ey%5tjv3f4cx@x=p)7kvz632o=q7d6f@!ht_^b6c*uv8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,6 +42,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+SITE_ID = 1
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,7 +51,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog',
+    'blog.apps.BlogConfig',
+    'taggit',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
 ]
 
 MIDDLEWARE = [
@@ -112,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pl'
 
-TIME_ZONE = 'Europe/Warsaw'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -120,9 +131,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-DECIMAL_SEPARATOR = ','
-USE_THOUSAND_SEPARATOR = True
-THOUSAND_SEPARATOR = ' '
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/

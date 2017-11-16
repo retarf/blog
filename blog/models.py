@@ -1,7 +1,10 @@
 from django.db import models
 from django.utils import timezone
+from django.core.urlresolvers import reverse
+
+from taggit.managers import TaggableManager
+
 from django.contrib.auth.models import User
-from django.urls import reverse
 
 
 class PublishedManager(models.Manager):
@@ -15,7 +18,6 @@ class Post(models.Model):
         ('draft', 'Roboczy'),
         ('published', 'Opublikowany'),
     )
-
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, unique_for_date='publish')
     author = models.ForeignKey(User, related_name='blog_posts')
@@ -26,24 +28,20 @@ class Post(models.Model):
     status = models.CharField(
         max_length=10, choices=STATUS_CHOICES, default='draft')
 
-    def __str__(self):
-        return self.title
+    tags = TaggableManager()
 
-    class Meta:
-        ordering = ('-publish', )
-
-        # def __str__(self):
-        #     return self.title
-
+    # menadzery
     objects = models.Manager()
     published = PublishedManager()
 
+    class Meta:
+        ordering = ('-publish',)
+
+    def __str__(self):
+        return self.title
+
     def get_absolute_url(self):
-        return reverse('blog:post_detail',
-                       args=[self.publish.year,
-                             self.publish.strftime('%m'),
-                             self.publish.strftime('%d'),
-                             self.slug])
+        return reverse('blog:post_detail', args=[self.publish.year, self.publish.strftime('%m'), self.publish.strftime('%d'), self.slug])
 
 
 class Comment(models.Model):
@@ -59,4 +57,4 @@ class Comment(models.Model):
         ordering = ('created',)
 
     def __str__(self):
-        return 'Koentarz dodany przez {} dla posta {}'.format(self.name, self.post)
+        return 'Komentarz dodoany przez {} dla posta {}'.format(self.name, self.post)
